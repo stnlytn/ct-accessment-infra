@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     aws = {
-        source = "hashicorp/aws"
-        version = "~> 4.30.0"
+      source  = "hashicorp/aws"
+      version = "~> 4.30.0"
     }
   }
   required_version = ">= 0.14.9"
@@ -39,15 +39,15 @@ resource "aws_s3_bucket_public_access_block" "terraform_state" {
 }
 
 resource "aws_dynamodb_table" "terraform-lock" {
-    name           = "terraform_state"
-    read_capacity  = 5
-    write_capacity = 5
-    hash_key       = "LockID"
-    attribute {
-        name = "LockID"
-        type = "S"
-    }
-    tags = {
-        "Name" = "DynamoDB Terraform State Lock Table"
-    }
+  name           = "terraform_state"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "LockID"
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+  tags = {
+    "Name" = "DynamoDB Terraform State Lock Table"
+  }
 }
