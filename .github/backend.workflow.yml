@@ -11,8 +11,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    environment:
-      name: DEV
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
