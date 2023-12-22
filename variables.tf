@@ -20,8 +20,8 @@ variable "environment" {
 }
 
 variable "number_of_private_subnets" {
-  type = number 
-  default = 1
+  type        = number
+  default     = 1
   description = "The number of private subnets in a VPC."
 }
 
@@ -36,7 +36,7 @@ variable "public_subnet_cidr_blocks" {
 }
 
 variable "availability_zones" {
-  type  = list(string)
+  type        = list(string)
   description = "List of availability zones for the selected region"
 }
 

@@ -21,14 +21,13 @@ provider "aws" {
   region = var.region
 }
 
-# VPC
 module "vpc" {
-    source = "./modules/vpc"
-    vpc_tag_name                  = "${var.project_name}-vpc"
-    number_of_private_subnets     = length(var.availability_zones)
-    environment                   = var.environment
-    vpc_cidr_block                = var.vpc_cidr_block
-    private_subnet_cidr_blocks    = var.private_subnet_cidr_blocks
-    public_subnet_cidr_blocks     = var.public_subnet_cidr_blocks
-    availability_zones            = var.availability_zones
+  source                     = "./modules/vpc"
+  vpc_tag_name               = "${var.project_name}-vpc"
+  number_of_private_subnets  = length(var.availability_zones)
+  environment                = var.environment
+  vpc_cidr_block             = var.vpc_cidr_block
+  private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
+  public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
+  availability_zones         = var.availability_zones
 }
