@@ -45,3 +45,14 @@ variable "region_identifiers" {
   default     = ["a", "b", "c", "d", "e", "f"]
   description = "Extensions for names of elements"
 }
+
+variable "image_id" {
+  type        = string
+  description = "image id for launch template"
+}
+
+variable "instance_type" {
+  type        = string
+  description = "instance type for launch template"
+  default     = "t3.micro"
+}
