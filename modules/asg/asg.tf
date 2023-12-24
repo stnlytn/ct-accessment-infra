@@ -38,33 +38,6 @@ resource "aws_lb_listener" "listener" {
   }
 }
 
-resource "aws_iam_role" "ssm_role" {
-  name = "my-ssm-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "policy_attachment" {
-  role       = aws_iam_role.ssm_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_instance_profile" "instance_profile" {
-  name = "my-ssm-instance-profile"
-  role = aws_iam_role.ssm_role.name
-}
-
 resource "aws_launch_template" "launch_template" {
   name_prefix   = var.project_name
   image_id      = var.image_id
@@ -82,7 +55,7 @@ resource "aws_launch_template" "launch_template" {
   }
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.instance_profile.name
+    name = var.instance_profile_name
   }
 }
 
@@ -131,5 +104,3 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
   alarm_actions     = [aws_autoscaling_policy.scale_up.arn]
   alarm_description = "This metric triggers when CPU usage is above 50% for 2 consecutive periods of 120 seconds"
 }
-
-

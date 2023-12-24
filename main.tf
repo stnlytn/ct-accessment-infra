@@ -20,25 +20,33 @@ provider "aws" {
   region = var.region
 }
 
-module "vpc" {
-  source                     = "./modules/vpc"
-  vpc_tag_name               = "${var.project_name}-vpc"
-  number_of_private_subnets  = length(var.availability_zones)
-  environment                = var.environment
-  vpc_cidr_block             = var.vpc_cidr_block
-  private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
-  public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
-  availability_zones         = var.availability_zones
+# module "vpc" {
+#   source                     = "./modules/vpc"
+#   project_name               = var.project_name
+#   number_of_private_subnets  = length(var.availability_zones)
+#   environment                = var.environment
+#   vpc_cidr_block             = var.vpc_cidr_block
+#   private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
+#   public_subnet_cidr_blocks  = var.public_subnet_cidr_blocks
+#   availability_zones         = var.availability_zones
+# }
+
+module "instance_profile" {
+  source = "./modules/instance_profile"
 }
 
-module "asg" {
-  source             = "./modules/asg"
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  public_subnet_ids  = module.vpc.public_subnet_ids
-  vpc_cidr_block     = module.vpc.vpc_cidr_block
-  project_name       = var.project_name
+# module "asg" {
+#   source                = "./modules/asg"
+#   vpc_id                = module.vpc.vpc_id
+#   private_subnet_ids    = module.vpc.private_subnet_ids
+#   public_subnet_ids     = module.vpc.public_subnet_ids
+#   vpc_cidr_block        = module.vpc.vpc_cidr_block
+#   project_name          = var.project_name
+#   image_id              = var.image_id
+#   instance_type         = var.instance_type
+#   instance_profile_name = module.instance_profile.instance_profile_name
+# }
 
-  image_id      = var.image_id
-  instance_type = var.instance_type
+module "dynamodb" {
+  source = "./modules/dynamodb"
 }

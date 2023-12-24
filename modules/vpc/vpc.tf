@@ -5,17 +5,17 @@ resource "aws_vpc" "custom_vpc" {
   enable_dns_hostnames             = true
 
   tags = {
-    Name = "${var.vpc_tag_name}-${var.environment}"
+    Name = "${var.project_name}-vpc-${var.environment}"
   }
 }
 
 ### VPC Network Setup
 # Create the private subnet
 resource "aws_subnet" "private_subnet" {
-  count                           = var.number_of_private_subnets
-  vpc_id                          = aws_vpc.custom_vpc.id
-  cidr_block                      = element(var.private_subnet_cidr_blocks, count.index)
-  availability_zone               = element(var.availability_zones, count.index)
+  count             = var.number_of_private_subnets
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(var.private_subnet_cidr_blocks, count.index)
+  availability_zone = element(var.availability_zones, count.index)
 
   tags = {
     Name = "${var.environment}-${var.project_name}-subnet-private-${var.region_identifiers[count.index]}"
@@ -24,10 +24,10 @@ resource "aws_subnet" "private_subnet" {
 
 # Create the public subnets
 resource "aws_subnet" "public_subnet" {
-  count             = var.number_of_private_subnets
-  vpc_id            = aws_vpc.custom_vpc.id
-  cidr_block        = element(var.public_subnet_cidr_blocks, count.index)
-#  assign_ipv6_address_on_creation = true
+  count      = var.number_of_private_subnets
+  vpc_id     = aws_vpc.custom_vpc.id
+  cidr_block = element(var.public_subnet_cidr_blocks, count.index)
+  #  assign_ipv6_address_on_creation = true
   availability_zone = element(var.availability_zones, count.index)
 
   tags = {
@@ -37,7 +37,7 @@ resource "aws_subnet" "public_subnet" {
 
 resource "aws_internet_gateway" "internet_access" {
   vpc_id = aws_vpc.custom_vpc.id
-  tags   = {
+  tags = {
     Name        = "${var.environment}-${var.project_name}-igw"
     Environment = var.environment
   }
@@ -47,7 +47,7 @@ resource "aws_eip" "nat_gateway_ip" {
   count      = var.number_of_private_subnets
   vpc        = true
   depends_on = [aws_internet_gateway.internet_access]
-  tags       = {
+  tags = {
     Name = "${var.environment}-${var.project_name}-eip-nat-gateway-${var.region_identifiers[count.index]}"
   }
 }
@@ -97,7 +97,7 @@ resource "aws_route" "public_access" {
   count                  = var.number_of_private_subnets
   route_table_id         = element(aws_route_table.private, count.index).id
   destination_cidr_block = "0.0.0.0/0"
-  depends_on             = [
+  depends_on = [
     aws_route_table.private
   ]
   nat_gateway_id = element(aws_nat_gateway.nat_gateway, count.index).id

@@ -33,11 +33,3 @@ output "cloud_watch_alarm_name" {
 output "allow_web_security_group_arn" {
   value = aws_security_group.allow_web.arn
 }
-
-output "instance_profile_arn" {
-  value = aws_iam_instance_profile.instance_profile.arn
-}
-
-output "instance_profile_name" {
-  value = aws_iam_instance_profile.instance_profile.name
-}

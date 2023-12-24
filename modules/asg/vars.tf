@@ -33,4 +33,7 @@ variable "instance_type" {
   type        = string
 }
 
-
+variable "instance_profile_name" {
+  description = "instance profile name for launch template"
+  type        = string
+}

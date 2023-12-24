@@ -4,19 +4,14 @@ variable "vpc_cidr_block" {
   default     = "10.0.0.0/16"
 }
 
-variable "vpc_tag_name" {
-  type        = string
-  description = "Name tag for the VPC"
-}
-
 variable "environment" {
   description = "Application environment"
   type        = string
 }
 
 variable "number_of_private_subnets" {
-  type = number 
-  default = 2
+  type        = number
+  default     = 2
   description = "The number of private subnets in a VPC."
 }
 
@@ -31,14 +26,13 @@ variable "public_subnet_cidr_blocks" {
 }
 
 variable "availability_zones" {
-  type  = list(string)
+  type        = list(string)
   description = "List of availability zones for the selected region"
 }
 
 variable "project_name" {
   description = "The name of the project"
   type        = string
-  default     = "ecommerce"
 }
 
 variable "region_identifiers" {
